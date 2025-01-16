@@ -4,6 +4,8 @@
 
 At first we will use short python script to get contents of the Google Cloud SKUs. In my case I will use https://cloud.google.com/skus/sku-groups/enterprise-agreement-2021-1 as the source data. If you will access this link you will see a thousands of SKUs.
 
+Before running the script we need to install python requirements first. We can do it with `pip install -r requirements.txt`.
+
 In step one we will use Python script which will parse the URL and save it to CSV file.
 
 ```Python
