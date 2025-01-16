@@ -10,16 +10,88 @@ In step one we will use Python script which will parse the URL and save it to CS
 
 Run it as follows `python3 scrape.py`.
 
-## Scrape Script
-For details on how the scraping is implemented, refer to the following file:
+```Python
+import requests
+from bs4 import BeautifulSoup
+import csv
+from datetime import datetime
 
+<<<<<<< HEAD
 https://github.com/wojciehm/get-gpc-sku-to-bq/blob/3da4b45b73ff219fc50f8496e7169a4cb40f7066/scrape.py#L1-32
+=======
+# URL of the Enterprise Agreement 2021.1 page
+url = "https://cloud.google.com/skus/sku-groups/enterprise-agreement-2021-1"
+
+# Send a GET request to fetch the HTML content of the page
+response = requests.get(url)
+if response.status_code == 200:
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Find the section containing the SKUs (depends on page structure)
+    sku_table = soup.find('table')  # Assuming SKUs are in a table
+    if sku_table:
+        rows = sku_table.find_all('tr')  # Extract table rows
+
+        # Generate a filename with current date and time
+        filename = f"enterprise_agreement_skus_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+        
+        # Prepare to save data to a CSV file
+        with open(filename, 'w', newline='') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            
+            for row in rows:
+                cols = row.find_all('td')  # Extract columns
+                if cols:
+                    # Extract and clean up column text
+                    sku_data = [col.text.strip() for col in cols]
+                    csvwriter.writerow(sku_data)  # Write data to the CSV file
+        print(f"Data saved to {filename}")
+    else:
+        print("SKU table not found on the page.")
+else:
+    print(f"Failed to fetch the page. Status code: {response.status_code}")
+```
+>>>>>>> 991f8c7 (Removed code snippets)
 
 # Step two
 In step two we will use bash script to upload the CSV file into Google Cloud Storage and then we will ingest it into BigQuery. As you see in the variables we need to have Google Cloud project, bucket, dataset and table already pre-created.
 
-https://github.com/wojciehm/get-gpc-sku-to-bq/blob/3da4b45b73ff219fc50f8496e7169a4cb40f7066/upload-to-bq.sh
+```bash
+#!/bin/bash
 
+# Variables
+PROJECT_ID="your_project_id"
+BUCKET_NAME="your_bucket_name"
+DATASET_NAME="your_dataset_name"
+TABLE_NAME="your_table_name"
+CSV_FILE="enterprise_agreement_skus_$(date +%Y-%m-%d_%H-%M-%S).csv"  # Updated filename with date and time
+
+# Scrape data (assuming you have a scraping script or data source to generate this)
+# Example: scrape data and save it to a temporary file
+SCRAPED_DATA="path/to/scraped_data.csv"  # Replace with the path to your actual scraped CSV
+
+# Move the scraped data to the intended CSV file
+mv $SCRAPED_DATA $CSV_FILE
+
+# Upload CSV to Google Cloud Storage
+echo "Uploading $CSV_FILE to Google Cloud Storage bucket $BUCKET_NAME..."
+gsutil cp $CSV_FILE gs://$BUCKET_NAME/
+
+# Load CSV into BigQuery
+echo "Loading $CSV_FILE into BigQuery table $DATASET_NAME.$TABLE_NAME..."
+bq load \
+  --autodetect \
+  --source_format=CSV \
+  $PROJECT_ID:$DATASET_NAME.$TABLE_NAME \
+  gs://$BUCKET_NAME/$CSV_FILE
+
+# Confirm success
+if [ $? -eq 0 ]; then
+  echo "CSV successfully imported into BigQuery table $DATASET_NAME.$TABLE_NAME."
+else
+  echo "Failed to import CSV into BigQuery. Check the logs for details."
+fi
+```
 Of course you need to make shell script executable, it can be done by typing in command `chmod +x upload-to-bq.sh`.
 
 Then run script in your command line environment by running `./upload-to-bq.sh`.
