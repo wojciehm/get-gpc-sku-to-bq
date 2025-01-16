@@ -94,4 +94,8 @@ Then run script in your command line environment by running `./upload-to-bq.sh`.
 
 ![Script executed in Google Cloud Shell](cloud_shell_execution.png)
 
-After that we can see that data is uploaded 
+After that we can see that data is uploaded to BigQuery and can be analyzed :)
+
+![Data is uploaded to BigQuery](data_uploaded_to_bq.png)
+
+Voila! :)
