@@ -8,6 +8,8 @@ Before running the script we need to install python requirements first. We can d
 
 In step one we will use Python script which will parse the URL and save it to CSV file.
 
+Run it as follows `python3 scrape.py`.
+
 ```Python
 import requests
 from bs4 import BeautifulSoup
