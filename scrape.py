@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+from datetime import datetime
 
 # URL of the Enterprise Agreement 2021.1 page
 url = "https://cloud.google.com/skus/sku-groups/enterprise-agreement-2021-1"
@@ -15,8 +16,11 @@ if response.status_code == 200:
     if sku_table:
         rows = sku_table.find_all('tr')  # Extract table rows
 
+        # Generate a filename with current date and time
+        filename = f"enterprise_agreement_skus_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+        
         # Prepare to save data to a CSV file
-        with open('enterprise_agreement_skus.csv', 'w', newline='') as csvfile:
+        with open(filename, 'w', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
             
             for row in rows:
@@ -25,9 +29,8 @@ if response.status_code == 200:
                     # Extract and clean up column text
                     sku_data = [col.text.strip() for col in cols]
                     csvwriter.writerow(sku_data)  # Write data to the CSV file
-        print("Data saved to enterprise_agreement_skus.csv")
+        print(f"Data saved to {filename}")
     else:
         print("SKU table not found on the page.")
 else:
     print(f"Failed to fetch the page. Status code: {response.status_code}")
-
