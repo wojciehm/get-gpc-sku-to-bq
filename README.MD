@@ -16,9 +16,6 @@ from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
 
-<<<<<<< HEAD
-https://github.com/wojciehm/get-gpc-sku-to-bq/blob/3da4b45b73ff219fc50f8496e7169a4cb40f7066/scrape.py#L1-32
-=======
 # URL of the Enterprise Agreement 2021.1 page
 url = "https://cloud.google.com/skus/sku-groups/enterprise-agreement-2021-1"
 
@@ -51,7 +48,6 @@ if response.status_code == 200:
 else:
     print(f"Failed to fetch the page. Status code: {response.status_code}")
 ```
->>>>>>> 991f8c7 (Removed code snippets)
 
 # Step two
 In step two we will use bash script to upload the CSV file into Google Cloud Storage and then we will ingest it into BigQuery. As you see in the variables we need to have Google Cloud project, bucket, dataset and table already pre-created.
