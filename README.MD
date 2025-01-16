@@ -13,7 +13,7 @@ Run it as follows `python3 scrape.py`.
 ## Scrape Script
 For details on how the scraping is implemented, refer to the following file:
 
-https://github.com/wojciehm/get-gpc-sku-to-bq/blob/3da4b45b73ff219fc50f8496e7169a4cb40f7066/scrape.py
+https://github.com/wojciehm/get-gpc-sku-to-bq/blob/3da4b45b73ff219fc50f8496e7169a4cb40f7066/scrape.py#L1-32
 
 # Step two
 In step two we will use bash script to upload the CSV file into Google Cloud Storage and then we will ingest it into BigQuery. As you see in the variables we need to have Google Cloud project, bucket, dataset and table already pre-created.
