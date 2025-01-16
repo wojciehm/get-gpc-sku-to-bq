@@ -14,7 +14,6 @@ Run it as follows `python3 scrape.py`.
 import requests
 from bs4 import BeautifulSoup
 import csv
-from datetime import datetime
 
 # URL of the Enterprise Agreement 2021.1 page
 url = "https://cloud.google.com/skus/sku-groups/enterprise-agreement-2021-1"
@@ -29,11 +28,8 @@ if response.status_code == 200:
     if sku_table:
         rows = sku_table.find_all('tr')  # Extract table rows
 
-        # Generate a filename with current date and time
-        filename = f"enterprise_agreement_skus_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
-        
         # Prepare to save data to a CSV file
-        with open(filename, 'w', newline='') as csvfile:
+        with open('enterprise_agreement_skus.csv', 'w', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
             
             for row in rows:
@@ -42,7 +38,7 @@ if response.status_code == 200:
                     # Extract and clean up column text
                     sku_data = [col.text.strip() for col in cols]
                     csvwriter.writerow(sku_data)  # Write data to the CSV file
-        print(f"Data saved to {filename}")
+        print("Data saved to enterprise_agreement_skus.csv")
     else:
         print("SKU table not found on the page.")
 else:
@@ -60,14 +56,7 @@ PROJECT_ID="your_project_id"
 BUCKET_NAME="your_bucket_name"
 DATASET_NAME="your_dataset_name"
 TABLE_NAME="your_table_name"
-CSV_FILE="enterprise_agreement_skus_$(date +%Y-%m-%d_%H-%M-%S).csv"  # Updated filename with date and time
-
-# Scrape data (assuming you have a scraping script or data source to generate this)
-# Example: scrape data and save it to a temporary file
-SCRAPED_DATA="path/to/scraped_data.csv"  # Replace with the path to your actual scraped CSV
-
-# Move the scraped data to the intended CSV file
-mv $SCRAPED_DATA $CSV_FILE
+CSV_FILE="enterprise_agreement_skus.csv"
 
 # Upload CSV to Google Cloud Storage
 echo "Uploading $CSV_FILE to Google Cloud Storage bucket $BUCKET_NAME..."

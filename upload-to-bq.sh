@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Variables
-PROJECT_ID="wojciech-backup"
-BUCKET_NAME="wojciech-bq-import"
-DATASET_NAME="wojciechskubqdataset"
-TABLE_NAME="wojciechskubqtable"
+PROJECT_ID="your_project_id"
+BUCKET_NAME="your_bucket_name"
+DATASET_NAME="your_dataset_name"
+TABLE_NAME="your_table_name"
 CSV_FILE="enterprise_agreement_skus.csv"
 
 # Upload CSV to Google Cloud Storage
